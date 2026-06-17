@@ -11,6 +11,7 @@ venv/
 
 # Project outputs (runtime artifacts, never committed)
 outputs/
+*_sweep.log
 *.pt
 *.ckpt
 *.npz
