@@ -1,0 +1,37 @@
+name: compute_matched_k4
+seed: 0
+device: auto
+output_dir: outputs
+
+# Baseline à compute égal au latent k=4 : n_layers + k = 2 + 4 = 6 couches
+# DISTINCTES. +FLOPs ET +params. Si latent(k=4) >= ce modèle, la *structure*
+# (récurrence partagée) compte, pas seulement le budget de calcul.
+data:
+  name: addition
+  train_digits: [1, 3]
+  ood_digits: [4, 6]
+  n_train: 12000
+  n_val: 2000
+  n_test: 2000
+  n_ood: 2000
+  reverse_output: true
+
+model:
+  kind: compute_matched
+  d_model: 128
+  n_layers: 2
+  n_heads: 4
+  d_ff: 256
+  dropout: 0.1
+  max_len: 48
+  k: 4
+  pos_encoding: nope
+
+train:
+  epochs: 20
+  batch_size: 256
+  lr: 0.0003
+  weight_decay: 0.01
+  warmup_steps: 200
+  grad_clip: 1.0
+  eval_every: 2
